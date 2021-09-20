@@ -31,6 +31,16 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 
 def score(dice)
   # You need to write this method
+  score = 0
+  counts = dice.each_with_object(Hash.new(0)) { |index,value| value[index] += 1} #counts how many times an element occured
+  (1..6).each do |i| #test every hash for each dice inputs
+    if counts[i] >= 3
+      score += (i == 1? 1000 : i * 100) # check if sets of three
+      counts[i] = [counts[i] - 3, 0].max #get the remaining numbers if set > 3
+    end
+    score += counts[i] * (i == 1 ? 100 : i == 5? 50: 0)#apply rule for non set inputs
+  end
+  score #return
 end
 
 class AboutScoringProject < Neo::Koan
